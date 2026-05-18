@@ -1,14 +1,14 @@
-﻿namespace RengerSolutionsAPI.Models
+﻿namespace RengerSolutionsAPI.Models;
+
+public class Order
 {
-    public class Order
-    {
-        public Guid Id { get; set; }
-        public string CustomerName { get; set; } = string.Empty;
-        public string CustomerEmail { get; set; } = string.Empty;
-        public string ProductName { get; set; } = string.Empty;
-        public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
-        public decimal TotalPrice => Quantity * UnitPrice;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    }
+    public Guid Id { get; set; }
+
+    public Guid CustomerId { get; set; }
+
+    public Customer Customer { get; set; } = null!;
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public List<OrderItem> Items { get; set; } = new();
 }
