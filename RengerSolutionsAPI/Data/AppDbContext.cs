@@ -8,7 +8,13 @@ namespace RengerSolutionsAPI.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
-        // Define your DbSets here, for example:
+        
+        public DbSet<Customer> Customers { get; set; }
+
         public DbSet<Order> Orders { get; set; }
+
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<OrderItem> OrderItems { get; set; }
     }
 }
