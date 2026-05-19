@@ -53,9 +53,45 @@ namespace RengerSolutionsAPI.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(
-                nameof(GetCustomerById), 
-                new { id = customer.Id }, 
+                nameof(GetCustomerById),
+                new { id = customer.Id },
                 customer);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateCustomer(Guid id, UpdateCustomerRequest request)
+        {
+            var customerToUpdate = await _context.Customers.FirstOrDefaultAsync(c => c.Id == id);
+
+            if (customerToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            customerToUpdate.Name = request.Name;
+            customerToUpdate.Email = request.Email;
+            customerToUpdate.PhoneNumber = request.PhoneNumber;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCustomer(Guid id)
+        {
+            var customerToDelete = await _context.Customers.FirstOrDefaultAsync(c => c.Id == id);
+
+            if (customerToDelete == null)
+            {
+                return NotFound();
+            }
+
+            _context.Customers.Remove(customerToDelete);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
