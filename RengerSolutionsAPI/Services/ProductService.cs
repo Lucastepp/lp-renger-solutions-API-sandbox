@@ -17,5 +17,10 @@ namespace RengerSolutionsAPI.Services
         {
             return await _context.Products.ToListAsync();
         }
+
+        public async Task<Product?> GetProductByIdAsync(Guid id)
+        {
+            return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+        }
     }
 }
