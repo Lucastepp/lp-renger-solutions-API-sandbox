@@ -30,7 +30,7 @@ namespace RengerSolutionsAPI.Controllers
 
             if (product == null)
             {
-                return NotFound();
+                return NotFound("Product not found.");
             }
 
             return Ok(product);

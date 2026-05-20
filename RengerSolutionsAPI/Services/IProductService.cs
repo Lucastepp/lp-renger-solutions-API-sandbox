@@ -5,6 +5,6 @@ namespace RengerSolutionsAPI.Services
     public interface IProductService
     {
         Task<IEnumerable<Product>> GetAllProductsAsync();
-        Task<Product> GetProductByIdAsync(Guid id);
+        Task<Product?> GetProductByIdAsync(Guid id);
     }
 }

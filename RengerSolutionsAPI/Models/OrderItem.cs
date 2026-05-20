@@ -8,7 +8,7 @@ public class OrderItem
 
     public Order Order { get; set; } = null!;
 
-    public string ProductId { get; set; } = string.Empty;
+    public Guid ProductId { get; set; }
 
     public Product Product { get; set; } = null!;
 
