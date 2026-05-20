@@ -2,6 +2,7 @@
 using RengerSolutionsAPI.Data;
 using RengerSolutionsAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using RengerSolutionsAPI.DTOs;
 
 namespace RengerSolutionsAPI.Controllers
 {
@@ -38,9 +39,21 @@ namespace RengerSolutionsAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Order>> CreateOrder(Order order)
+        public async Task<ActionResult<Order>> CreateOrder(CreateOrderRequest request)
         {
-            order.Id = Guid.NewGuid();
+            var order = new Order
+            {
+                Id = Guid.NewGuid(),
+                CustomerId = request.CustomerId,
+                OrderNumber = request.OrderNumber,
+                OrderDate = DateTime.UtcNow,
+                Items = request.Items.Select(i => new OrderItem
+                {
+                    Id = Guid.NewGuid(),
+                    ProductId = i.ProductId,
+                    Quantity = i.Quantity
+                }).ToList()
+            };
 
             _context.Orders.Add(order);
 
@@ -51,5 +64,23 @@ namespace RengerSolutionsAPI.Controllers
                 new { id = order.Id },
                 order);
         }
-    } 
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Order>> UpdateOrder(Guid id, CreateOrderRequest request)
+        {
+            var orderToUpdate = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
+
+            if (orderToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            orderToUpdate.CustomerId = request.CustomerId;
+            orderToUpdate.OrderNumber = request.OrderNumber;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(orderToUpdate);
+        }
+    }
 }
